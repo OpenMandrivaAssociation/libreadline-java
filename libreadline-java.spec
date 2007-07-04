@@ -34,7 +34,7 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.1
+Release:        %mkrel 1.2
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
@@ -101,11 +101,9 @@ export JAVA_HOME=%{java_home}
 # lib
 %{__mkdir_p} %{buildroot}%{_libdir}
 %if %with readline
-%{__install} -m 755 libJavaReadline.so %{buildroot}%{_libdir}/libJavaReadline.so.%{version}
-(cd %{buildroot}%{_libdir} && %{__ln_s} libJavaReadline.so.%{version} libJavaReadline.so)
+%{__install} -m 755 libJavaReadline.so %{buildroot}%{_libdir}/libJavaReadline.so
 %else
-%{__install} -m 755 libJavaEditline.so %{buildroot}%{_libdir}/libJavaEditline.so.%{version}
-(cd %{buildroot}%{_libdir} && %{__ln_s} libJavaEditline.so.%{version} libJavaEditline.so)
+%{__install} -m 755 libJavaEditline.so %{buildroot}%{_libdir}/libJavaEditline.so
 %endif
 
 # javadoc
@@ -127,7 +125,7 @@ export JAVA_HOME=%{java_home}
 %files
 %defattr(0644,root,root,0755)
 %doc COPYING.LIB NEWS README README.1st TODO VERSION contrib
-%{_libdir}/*.so*
+%attr(0755,root,root) %{_libdir}/*.so
 %{_jnidir}/*.jar
 %if %{gcj_support}
 %dir %{_libdir}/gcj/%{name}
