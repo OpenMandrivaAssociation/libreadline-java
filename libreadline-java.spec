@@ -34,7 +34,7 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.2
+Release:        %mkrel 1.3
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
@@ -78,6 +78,7 @@ Javadoc for %{name}.
 %prep
 %setup -q
 %{_bindir}/find . -type d -name CVS | %{_bindir}/xargs -t %{__rm} -r
+%{_bindir}/find . -type f -name "*.dll" | %{_bindir}/xargs -t %{__rm}
 %{__perl} -pi -e 's|javadoc |%{javadoc} |g;' \
               -e 's|jar -c|%{jar} -c|g;' \
   Makefile
