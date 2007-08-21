@@ -40,8 +40,6 @@ Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
 URL:            http://java-readline.sourceforge.net/
 Source0:        http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
-Requires(post): ldconfig
-Requires(postun): ldconfig
 BuildRequires:  jpackage-utils >= 0:1.6
 %if %with readline
 BuildRequires:  libreadline-devel
