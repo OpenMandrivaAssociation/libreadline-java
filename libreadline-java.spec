@@ -44,7 +44,7 @@ BuildRequires:  jpackage-utils >= 0:1.6
 %if %with readline
 BuildRequires:  libreadline-devel
 %else
-BuildRequires:  libedit-devel
+BuildRequires:  edit-devel
 %endif
 BuildRequires:  libtermcap-devel
 Provides:       java_readline = %{epoch}-%{version}-%{release}
