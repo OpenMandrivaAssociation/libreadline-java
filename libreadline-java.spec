@@ -34,7 +34,7 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.3
+Release:        %mkrel 1.4
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
@@ -55,8 +55,6 @@ Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 #Vendor:        JPackage Project
 %if %{gcj_support}
 BuildRequires:  java-gcj-compat-devel
-Requires(post): java-gcj-compat
-Requires(postun): java-gcj-compat
 %else
 BuildRequires:  java-devel >= 0:1.4.2
 %endif
