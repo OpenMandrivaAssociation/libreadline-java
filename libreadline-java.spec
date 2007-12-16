@@ -34,13 +34,13 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.4
+Release:        %mkrel 1.5
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
 URL:            http://java-readline.sourceforge.net/
 Source0:        http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
-BuildRequires:  jpackage-utils >= 0:1.6
+BuildRequires:  java-rpmbuild >= 0:1.6
 %if %with readline
 BuildRequires:  libreadline-devel
 %else
