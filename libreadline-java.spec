@@ -50,6 +50,7 @@ BuildRequires:  libtermcap-devel
 Provides:       java_readline = %{epoch}-%{version}-%{release}
 Provides:       gnu.readline = %{epoch}-%{version}-%{release}
 Group:          Development/Java
+Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 #Distribution:  JPackage
 #Vendor:        JPackage Project
 %if %{gcj_support}
