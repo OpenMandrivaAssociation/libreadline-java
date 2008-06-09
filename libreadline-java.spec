@@ -115,9 +115,13 @@ export JAVA_HOME=%{java_home}
 %clean
 %{__rm} -rf %{buildroot}
 
+%if %mdkversion < 200900
 %post -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -p /sbin/ldconfig
+%endif
 
 %files
 %defattr(0644,root,root,0755)
