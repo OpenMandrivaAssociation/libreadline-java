@@ -34,7 +34,7 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.5
+Release:        %mkrel 1.6
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
