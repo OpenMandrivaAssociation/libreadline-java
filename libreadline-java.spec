@@ -34,7 +34,7 @@
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        %mkrel 1.10
+Release:        2
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
@@ -42,15 +42,14 @@ URL:            http://java-readline.sourceforge.net/
 Source0:        http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
 BuildRequires:  java-rpmbuild >= 0:1.6
 %if %with readline
-BuildRequires:  libreadline-devel
+BuildRequires:  readline-devel
 %else
 BuildRequires:  edit-devel
 %endif
-BuildRequires:  libtermcap-devel
-Provides:       java_readline = %{epoch}-%{version}-%{release}
-Provides:       gnu.readline = %{epoch}-%{version}-%{release}
+BuildRequires:  termcap-devel
+Provides:       java_readline = %{epoch}:%{version}-%{release}
+Provides:       gnu.readline = %{epoch}:%{version}-%{release}
 Group:          Development/Java
-Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 #Distribution:  JPackage
 #Vendor:        JPackage Project
 %if %{gcj_support}
@@ -105,22 +104,11 @@ export JAVA_HOME=%{java_home}
 
 # javadoc
 %{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
-%{__cp} -a api/* %{buildroot}%{_javadocdir}/%{name}-%{version}
+cp -a api/* %{buildroot}%{_javadocdir}/%{name}-%{version}
 (cd %{buildroot}%{_javadocdir} && %{__ln_s} %{name}-%{version} %{name})
 
 %if %{gcj_support}
 %{_bindir}/aot-compile-rpm
-%endif
-
-%clean
-%{__rm} -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -p /sbin/ldconfig
 %endif
 
 %files
@@ -138,4 +126,84 @@ export JAVA_HOME=%{java_home}
 %{_javadocdir}/%{name}-%{version}
 %{_javadocdir}/%{name}
 
+
+
+
+%changelog
+* Sun Nov 28 2010 Oden Eriksson <oeriksson@mandriva.com> 0:0.8.1-1.8mdv2011.0
++ Revision: 602601
+- rebuild
+
+* Tue Mar 16 2010 Oden Eriksson <oeriksson@mandriva.com> 0:0.8.1-1.7mdv2010.1
++ Revision: 520899
+- rebuilt for 2010.1
+
+* Wed Sep 02 2009 Christophe Fergeau <cfergeau@mandriva.com> 0:0.8.1-1.6mdv2010.0
++ Revision: 425696
+- rebuild
+
+* Mon Jun 09 2008 Pixel <pixel@mandriva.com> 0:0.8.1-1.5mdv2009.0
++ Revision: 217191
+- do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sun Dec 16 2007 Anssi Hannula <anssi@mandriva.org> 0:0.8.1-1.5mdv2008.1
++ Revision: 120972
+- buildrequire java-rpmbuild, i.e. build with icedtea on x86(_64)
+
+* Sat Sep 15 2007 Anssi Hannula <anssi@mandriva.org> 0:0.8.1-1.4mdv2008.0
++ Revision: 87248
+- fix buildrequires
+- rebuild to filter out autorequires of GCJ AOT objects
+- remove unnecessary Requires(post) on java-gcj-compat
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill ldconfig require as requested by pixel
+
+* Wed Jul 04 2007 David Walluck <walluck@mandriva.org> 0:0.8.1-1.3mdv2008.0
++ Revision: 48242
+- don't ship binary win32 .dll
+
+* Wed Jul 04 2007 David Walluck <walluck@mandriva.org> 0:0.8.1-1.2mdv2008.0
++ Revision: 48239
+- lib should be unversioned and mode 0755
+
+
+* Thu Mar 15 2007 David Walluck <walluck@mandriva.org> 0.8.1-1.1mdv2007.1
++ Revision: 144079
+- 0.8.1 (CVS)
+
+* Mon Mar 12 2007 David Walluck <walluck@mandriva.org> 0:0.8.0-11.2mdv2007.1
++ Revision: 142055
+- add gcj support
+  add unversioned javadoc directory
+- Import libreadline-java
+
+* Sun Mar 11 2007 David Walluck <walluck@mandriav.org> 0:0.8.0-11.1mdv2007.1
+- release
+
+* Sat May 27 2006 Ralph Apel <r.apel@r-apel.de> 0:0.8.0-11jpp
+- First JPP-1.7 release
+
+* Wed Nov 09 2005 Fernando Nasser <fnasser@redhat.com> 0:0.8.0-10jpp
+- Rebuild for readline 5.0
+
+* Wed Mar 30 2005 David Walluck <david@jpackage.org> 0:0.8.0-9jpp
+- fix duplicate files in file list
+- set java bins in path
+
+* Tue Nov 02 2004 Nicolas Mailhot <nim@jpackage.org> -  0:0.8.0-8jpp
+- Move jars into %%{_jnidir}
+
+* Tue Nov 02 2004 Nicolas Mailhot <nim@jpackage.org> -  0:0.8.0-7jpp
+- Replace build dep on termcap-devel with dep on %%{_libdir}/libtermcap.so
+  (needed on RH/FC systems)
+
+* Sun Oct 10 2004 David Walluck <david@jpackage.org> 0:0.8.0-6jpp
+- rebuild for JPackage 1.5 devel
 
