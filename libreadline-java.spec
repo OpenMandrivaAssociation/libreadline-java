@@ -46,7 +46,7 @@ BuildRequires:  readline-devel
 %else
 BuildRequires:  edit-devel
 %endif
-BuildRequires:  termcap-devel
+BuildRequires:  pkgconfig(ncursesw)
 Provides:       java_readline = %{epoch}:%{version}-%{release}
 Provides:       gnu.readline = %{epoch}:%{version}-%{release}
 Group:          Development/Java
