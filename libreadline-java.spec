@@ -83,9 +83,9 @@ Javadoc for %{name}.
 %build
 export JAVA_HOME=%{java_home}
 %if %with readline
-%{__make} T_LIBS=JavaReadline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}"
+%{__make} T_LIBS=JavaReadline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}" CFLAGS="-DPOSIX %{optflags}" LD_FLAGS="-shared %{ldflags}"
 %else
-%{__make} T_LIBS=JavaEditline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}"
+%{__make} T_LIBS=JavaEditline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}" CFLAGS="-DPOSIX %{optflags}" LD_FLAGS="-shared %{ldflags}"
 %endif
 %{__make} apidoc
 
