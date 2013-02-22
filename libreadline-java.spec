@@ -29,12 +29,12 @@
 #
 
 %bcond_with             readline
-%define gcj_support     1
+%define gcj_support     0
 %define section         free
 
 Name:           libreadline-java
 Version:        0.8.1
-Release:        2
+Release:        3
 Epoch:          0
 Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
