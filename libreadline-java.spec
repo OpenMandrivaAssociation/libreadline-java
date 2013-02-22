@@ -40,6 +40,7 @@ Summary:        Java wrapper for the GNU-readline library
 License:        LGPL
 URL:            http://java-readline.sourceforge.net/
 Source0:        http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
+Patch0:		libreadline-java-0.8.1-build-against-libncursesw.patch
 BuildRequires:  java-rpmbuild >= 0:1.6
 %if %with readline
 BuildRequires:  readline-devel
@@ -72,6 +73,7 @@ Javadoc for %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .ncurses~
 %{_bindir}/find . -type d -name CVS | %{_bindir}/xargs -t %{__rm} -r
 %{_bindir}/find . -type f -name "*.dll" | %{_bindir}/xargs -t %{__rm}
 %{__perl} -pi -e 's|javadoc |%{javadoc} |g;' \

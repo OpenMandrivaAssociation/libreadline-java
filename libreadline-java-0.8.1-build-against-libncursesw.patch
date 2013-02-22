@@ -1,0 +1,43 @@
+--- libreadline-java-0.8.1/src/native/Makefile.ncurses~	2013-02-22 03:44:09.295229524 +0100
++++ libreadline-java-0.8.1/src/native/Makefile	2013-02-22 03:44:46.304608567 +0100
+@@ -43,10 +43,10 @@ CFLAGS   = -fpic -DPOSIX
+ LD_FLAGS = -shared
+ 
+ INCLUDES          = -I $(JAVAINCLUDE) -I $(JAVANATINC)
+-LIBPATH           = -L/usr/lib/termcap 
++LIBPATH           = -L/usr/lib/ncursesw 
+ 
+-JavaReadline_LIBS = -lreadline -ltermcap -lhistory
+-JavaEditline_LIBS = -ledit -ltermcap
++JavaReadline_LIBS = -lreadline -lncursesw -lhistory
++JavaEditline_LIBS = -ledit -lncursesw
+ JavaGetline_LIBS  = 
+ endif
+ 
+@@ -59,11 +59,11 @@ CFLAGS  := -DWIN32
+ LD_FLAGS = -shared
+ 
+ INCLUDES          = -I $(JAVAINCLUDE) -I $(JAVANATINC)
+-LIBPATH           = -L/usr/lib/termcap 
++LIBPATH           = -L/usr/lib/ncursesw 
+ 
+-JavaReadline_LIBS = -lreadline -ltermcap -lhistory
+-JavaEditline_LIBS = -ledit -ltermcap
+-JavaGetline_LIBS  = -ltermcap
++JavaReadline_LIBS = -lreadline -lncursesw -lhistory
++JavaEditline_LIBS = -ledit -lncursesw
++JavaGetline_LIBS  = -lncursesw
+ endif
+ 
+ ifeq (MSWIN,$(OS_FLAVOR))
+@@ -94,8 +94,8 @@ LD_FLAGS = -dynamiclib -framework JavaVM
+ INCLUDES          = -I/sw/include -I $(JAVAINCLUDE) -I $(JAVANATINC)
+ LIBPATH           = -L/usr/lib -L/sw/lib
+ 
+-JavaReadline_LIBS = -lreadline -ltermcap -lhistory
+-JavaEditline_LIBS = -ledit -ltermcap
++JavaReadline_LIBS = -lreadline -lncursesw -lhistory
++JavaEditline_LIBS = -ledit -lncursesw
+ JavaGetline_LIBS  = 
+ endif
+ 
