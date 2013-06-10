@@ -28,36 +28,34 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-%bcond_with             readline
-%define gcj_support     0
-%define section         free
+%bcond_with	readline
+%define gcj_support	0
+%define section		free
 
-Name:           libreadline-java
-Version:        0.8.1
-Release:        3
-Epoch:          0
-Summary:        Java wrapper for the GNU-readline library
-License:        LGPL
-URL:            http://java-readline.sourceforge.net/
-Source0:        http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
+Summary:	Java wrapper for the GNU-readline library
+Name:		libreadline-java
+Version:	0.8.1
+Release:	3
+License:	LGPLv2
+Group:		Development/Java
+Url:		http://java-readline.sourceforge.net/
+Source0:	http://download.sourceforge.net/java-readline/libreadline-java-%{version}-src.tar.gz
 Patch0:		libreadline-java-0.8.1-build-against-libncursesw.patch
-BuildRequires:  java-rpmbuild >= 0:1.6
+
+BuildRequires:	java-rpmbuild >= 0:1.6
 %if %with readline
-BuildRequires:  readline-devel
+BuildRequires:	readline-devel
 %else
-BuildRequires:  edit-devel
+BuildRequires:	pkgconfig(libedit)
 %endif
-BuildRequires:  pkgconfig(ncursesw)
-Provides:       java_readline = %{epoch}:%{version}-%{release}
-Provides:       gnu.readline = %{epoch}:%{version}-%{release}
-Group:          Development/Java
-#Distribution:  JPackage
-#Vendor:        JPackage Project
+BuildRequires:	pkgconfig(ncursesw)
 %if %{gcj_support}
-BuildRequires:  java-gcj-compat-devel
+BuildRequires:	java-gcj-compat-devel
 %else
-BuildRequires:  java-devel >= 0:1.4.2
+BuildRequires:	java-devel >= 0:1.4.2
 %endif
+Provides:	java_readline = %{EVRD}
+Provides:	gnu.readline = %{EVRD}
 
 %description
 Java-Readline is a port of GNU Readline for Java. Or, to be more 
@@ -65,147 +63,69 @@ precise, it is a JNI-wrapper to Readline. It is distributed under
 the LGPL.
 
 %package javadoc
-Summary:        Javadoc for %{name}
-Group:          Development/Java
+Summary:	Javadoc for %{name}
+Group:		Development/Java
 
 %description javadoc
 Javadoc for %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .ncurses~
-%{_bindir}/find . -type d -name CVS | %{_bindir}/xargs -t %{__rm} -r
-%{_bindir}/find . -type f -name "*.dll" | %{_bindir}/xargs -t %{__rm}
-%{__perl} -pi -e 's|javadoc |%{javadoc} |g;' \
-              -e 's|jar -c|%{jar} -c|g;' \
-  Makefile
+%apply_patches
+find . -type d -name CVS | xargs -t rm -r
+find . -type f -name "*.dll" | xargs -t rm
+sed -i -e 's|javadoc |%{javadoc} |g;' \
+	-e 's|jar -c|%{jar} -c|g;' \
+	Makefile
 
 %build
 export JAVA_HOME=%{java_home}
+%make \
 %if %with readline
-%{__make} T_LIBS=JavaReadline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}" CFLAGS="-DPOSIX %{optflags}" LD_FLAGS="-shared %{ldflags}"
+	T_LIBS=JavaReadline \
 %else
-%{__make} T_LIBS=JavaEditline JAVAC=%{javac} JC_FLAGS="" LIBPATH="-L%{_libdir}" CFLAGS="-DPOSIX %{optflags}" LD_FLAGS="-shared %{ldflags}"
+	T_LIBS=JavaEditline \
 %endif
-%{__make} apidoc
+	JAVAC=%{javac} \
+	JC_FLAGS="" \
+	LIBPATH="-L%{_libdir}" \
+	CFLAGS="-DPOSIX %{optflags}" \
+	LD_FLAGS="-shared %{ldflags}"
+%make apidoc
 
 %install
-%{__rm} -rf %{buildroot}
 # jar
-%{__mkdir_p} %{buildroot}%{_jnidir}
-%{__install} -m 644 %{name}.jar %{buildroot}%{_jnidir}/%{name}-%{version}.jar
+mkdir -p %{buildroot}%{_jnidir}
+install -m 644 %{name}.jar %{buildroot}%{_jnidir}/%{name}-%{version}.jar
 (cd %{buildroot}%{_jnidir} && for jar in *-%{version}*; do \
 %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 # lib
-%{__mkdir_p} %{buildroot}%{_libdir}
+mkdir -p %{buildroot}%{_libdir}
 %if %with readline
-%{__install} -m 755 libJavaReadline.so %{buildroot}%{_libdir}/libJavaReadline.so
+install -m 755 libJavaReadline.so %{buildroot}%{_libdir}/libJavaReadline.so
 %else
-%{__install} -m 755 libJavaEditline.so %{buildroot}%{_libdir}/libJavaEditline.so
+install -m 755 libJavaEditline.so %{buildroot}%{_libdir}/libJavaEditline.so
 %endif
 
 # javadoc
-%{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
+mkdir -p %{buildroot}%{_javadocdir}/%{name}-%{version}
 cp -a api/* %{buildroot}%{_javadocdir}/%{name}-%{version}
 (cd %{buildroot}%{_javadocdir} && %{__ln_s} %{name}-%{version} %{name})
 
 %if %{gcj_support}
-%{_bindir}/aot-compile-rpm
+aot-compile-rpm
 %endif
 
 %files
-%defattr(0644,root,root,0755)
 %doc COPYING.LIB NEWS README README.1st TODO VERSION contrib
-%attr(0755,root,root) %{_libdir}/*.so
+%{_libdir}/*.so
 %{_jnidir}/*.jar
 %if %{gcj_support}
 %dir %{_libdir}/gcj/%{name}
-%attr(-,root,root) %{_libdir}/gcj/%{name}/*
+%{_libdir}/gcj/%{name}/*
 %endif
 
 %files javadoc
-%defattr(0644,root,root,0755)
 %{_javadocdir}/%{name}-%{version}
 %{_javadocdir}/%{name}
-
-
-
-
-%changelog
-* Sun Nov 28 2010 Oden Eriksson <oeriksson@mandriva.com> 0:0.8.1-1.8mdv2011.0
-+ Revision: 602601
-- rebuild
-
-* Tue Mar 16 2010 Oden Eriksson <oeriksson@mandriva.com> 0:0.8.1-1.7mdv2010.1
-+ Revision: 520899
-- rebuilt for 2010.1
-
-* Wed Sep 02 2009 Christophe Fergeau <cfergeau@mandriva.com> 0:0.8.1-1.6mdv2010.0
-+ Revision: 425696
-- rebuild
-
-* Mon Jun 09 2008 Pixel <pixel@mandriva.com> 0:0.8.1-1.5mdv2009.0
-+ Revision: 217191
-- do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
-
-  + Olivier Blin <oblin@mandriva.com>
-    - restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-* Sun Dec 16 2007 Anssi Hannula <anssi@mandriva.org> 0:0.8.1-1.5mdv2008.1
-+ Revision: 120972
-- buildrequire java-rpmbuild, i.e. build with icedtea on x86(_64)
-
-* Sat Sep 15 2007 Anssi Hannula <anssi@mandriva.org> 0:0.8.1-1.4mdv2008.0
-+ Revision: 87248
-- fix buildrequires
-- rebuild to filter out autorequires of GCJ AOT objects
-- remove unnecessary Requires(post) on java-gcj-compat
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill ldconfig require as requested by pixel
-
-* Wed Jul 04 2007 David Walluck <walluck@mandriva.org> 0:0.8.1-1.3mdv2008.0
-+ Revision: 48242
-- don't ship binary win32 .dll
-
-* Wed Jul 04 2007 David Walluck <walluck@mandriva.org> 0:0.8.1-1.2mdv2008.0
-+ Revision: 48239
-- lib should be unversioned and mode 0755
-
-
-* Thu Mar 15 2007 David Walluck <walluck@mandriva.org> 0.8.1-1.1mdv2007.1
-+ Revision: 144079
-- 0.8.1 (CVS)
-
-* Mon Mar 12 2007 David Walluck <walluck@mandriva.org> 0:0.8.0-11.2mdv2007.1
-+ Revision: 142055
-- add gcj support
-  add unversioned javadoc directory
-- Import libreadline-java
-
-* Sun Mar 11 2007 David Walluck <walluck@mandriav.org> 0:0.8.0-11.1mdv2007.1
-- release
-
-* Sat May 27 2006 Ralph Apel <r.apel@r-apel.de> 0:0.8.0-11jpp
-- First JPP-1.7 release
-
-* Wed Nov 09 2005 Fernando Nasser <fnasser@redhat.com> 0:0.8.0-10jpp
-- Rebuild for readline 5.0
-
-* Wed Mar 30 2005 David Walluck <david@jpackage.org> 0:0.8.0-9jpp
-- fix duplicate files in file list
-- set java bins in path
-
-* Tue Nov 02 2004 Nicolas Mailhot <nim@jpackage.org> -  0:0.8.0-8jpp
-- Move jars into %%{_jnidir}
-
-* Tue Nov 02 2004 Nicolas Mailhot <nim@jpackage.org> -  0:0.8.0-7jpp
-- Replace build dep on termcap-devel with dep on %%{_libdir}/libtermcap.so
-  (needed on RH/FC systems)
-
-* Sun Oct 10 2004 David Walluck <david@jpackage.org> 0:0.8.0-6jpp
-- rebuild for JPackage 1.5 devel
 
