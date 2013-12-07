@@ -35,7 +35,7 @@
 Summary:	Java wrapper for the GNU-readline library
 Name:		libreadline-java
 Version:	0.8.1
-Release:	3
+Release:	4
 License:	LGPLv2
 Group:		Development/Java
 Url:		http://java-readline.sourceforge.net/
