@@ -23,7 +23,12 @@ BuildRequires: libedit-devel >= %{editline_ver}
 BuildRequires: ncurses-devel
 BuildRequires: java-devel >= 1.4.2
 
+%if 0%{?fedora}
 Requires:      libedit >= %{editline_ver}
+%else
+%define libedit %mklibname edit 0
+Requires:      %{libedit} >= %{editline_ver}
+%endif
 Requires:      java >= 1.4.2
 
 %description
