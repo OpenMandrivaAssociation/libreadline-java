@@ -9,7 +9,7 @@ Epoch:         1
 %endif
 Name:          libreadline-java
 Version:       0.8.0
-Release:       33.0%{?dist}
+Release:       34.0
 Summary:       Java wrapper for the EditLine library
 License:       LGPLv2+
 URL:           http://java-readline.sf.net/
@@ -87,6 +87,7 @@ cp -a api/* %{buildroot}%{_javadocdir}/%{name}
 %{_jnidir}/*
 %{_mavenpomdir}/*
 %{_mavendepmapfragdir}/*
+%{_datadir}/maven-metadata/libreadline-java.xml
 
 %pre javadoc
 [ $1 -gt 1 ] && [ -L %{_javadocdir}/%{name} ] && \
