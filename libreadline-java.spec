@@ -9,8 +9,9 @@ Epoch:         1
 %endif
 Name:          libreadline-java
 Version:       0.8.0
-Release:       34.0
+Release:       37.1
 Summary:       Java wrapper for the EditLine library
+Group:		Development/Java
 License:       LGPLv2+
 URL:           http://java-readline.sf.net/
 Source0:       http://download.sf.net/java-readline/%{name}-%{version}-src.tar.gz
@@ -74,20 +75,17 @@ ln -sf ../java/%{name}.jar %{buildroot}%{_libdir}/%{name}/%{name}.jar
 
 mkdir -p %{buildroot}%{_mavenpomdir}
 install -pm 644 %{SOURCE1} %{buildroot}%{_mavenpomdir}/JPP-%{name}.pom
-%add_maven_depmap JPP-%{name}.pom %{name}.jar
+%add_maven_depmap
 
 # javadoc
 mkdir -p %{buildroot}%{_javadocdir}/%{name}
 cp -a api/* %{buildroot}%{_javadocdir}/%{name}
 
-%files
+%files -f .mfiles
 %doc ChangeLog NEWS README README.1st VERSION COPYING.LIB
 %dir %{_libdir}/%{name}
 %attr(-,root,root) %{_libdir}/%{name}/*
 %{_jnidir}/*
-%{_mavenpomdir}/*
-%{_mavendepmapfragdir}/*
-%{_datadir}/maven-metadata/libreadline-java.xml
 
 %pre javadoc
 [ $1 -gt 1 ] && [ -L %{_javadocdir}/%{name} ] && \
