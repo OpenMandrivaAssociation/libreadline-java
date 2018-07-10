@@ -9,7 +9,7 @@ Epoch:         1
 %endif
 Name:          libreadline-java
 Version:       0.8.0
-Release:       37.2
+Release:       37.3
 Summary:       Java wrapper for the EditLine library
 Group:		Development/Java
 License:       LGPLv2+
