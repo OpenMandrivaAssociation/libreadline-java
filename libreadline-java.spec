@@ -13,7 +13,7 @@ Release:       37.4
 Summary:       Java wrapper for the EditLine library
 Group:		Development/Java
 License:       LGPLv2+
-URL:           http://java-readline.sf.net/
+URL:           https://java-readline.sf.net/
 Source0:       http://download.sf.net/java-readline/%{name}-%{version}-src.tar.gz
 Source1:       %{name}-%{version}-pom.xml
 Patch0:        %{name}-ncurses.patch
