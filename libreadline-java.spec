@@ -19,6 +19,7 @@ Source1:       %{name}-%{version}-pom.xml
 Patch0:        %{name}-ncurses.patch
 Patch1:        %{name}-libdir.patch
 
+BuildRequires:	make
 BuildRequires: jpackage-utils >= 1.5
 BuildRequires: libedit-devel >= %{editline_ver}
 BuildRequires: ncurses-devel
